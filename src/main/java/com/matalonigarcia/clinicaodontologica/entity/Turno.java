@@ -1,16 +1,29 @@
 package com.matalonigarcia.clinicaodontologica.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public class Turno {
+    private int id;
     private LocalDateTime fechaHora;
     private Odontologo odontologo;
+
+    public Turno(int id, LocalDateTime fechaHora, Odontologo odontologo) {
+        this.id = id;
+        this.fechaHora = fechaHora;
+        this.odontologo = odontologo;
+    }
 
     public Turno(LocalDateTime fechaHora, Odontologo odontologo) {
         this.fechaHora = fechaHora;
         this.odontologo = odontologo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public LocalDateTime getFechaHora() {
@@ -31,9 +44,10 @@ public class Turno {
 
     @Override
     public String toString() {
-        return "✅ Turno: [" +
-                "📅 Fecha y Hora: " + fechaHora + " | " +
-                "🦷 Odontólogo: " + odontologo +
+        return "🎫 Turno: [" +
+                " 🆔 ID: " + id +
+                " | 📅 Fecha y Hora: " + fechaHora +
+                " | 🦷 Odontólogo: " + odontologo +
                 ']';
     }
 }

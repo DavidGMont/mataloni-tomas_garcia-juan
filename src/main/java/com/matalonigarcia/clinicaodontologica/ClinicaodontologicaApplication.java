@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 public class ClinicaodontologicaApplication {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ClinicaodontologicaApplication.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClinicaodontologicaApplication.class);
 
-	public static void main(String[] args) {
-		SpringApplication.run(ClinicaodontologicaApplication.class, args);
-		LOGGER.info("🦷 La Clínica se está abriendo...");
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ClinicaodontologicaApplication.class, args);
+        LOGGER.info("🦷 La Clínica se está abriendo...");
+    }
 
 }

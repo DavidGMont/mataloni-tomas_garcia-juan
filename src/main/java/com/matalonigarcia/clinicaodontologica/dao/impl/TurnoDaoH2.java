@@ -2,7 +2,7 @@ package com.matalonigarcia.clinicaodontologica.dao.impl;
 
 import com.matalonigarcia.clinicaodontologica.dao.H2Connection;
 import com.matalonigarcia.clinicaodontologica.dao.IDao;
-import com.matalonigarcia.clinicaodontologica.entity.Domicilio;
+import com.matalonigarcia.clinicaodontologica.entity.Turno;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -12,31 +12,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class DomicilioDaoH2 implements IDao<Domicilio> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DomicilioDaoH2.class);
+public class TurnoDaoH2 implements IDao<Turno> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TurnoDaoH2.class);
 
     @Override
-    public Domicilio guardar(Domicilio domicilio) {
+    public Turno guardar(Turno turno) {
         Connection connection = null;
 
         try {
             connection = H2Connection.getConnection();
             connection.setAutoCommit(false);
 
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO DOMICILIOS (CALLE, NUMERO, LOCALIDAD, PROVINCIA) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, domicilio.getCalle());
-            preparedStatement.setInt(2, domicilio.getNumero());
-            preparedStatement.setString(3, domicilio.getLocalidad());
-            preparedStatement.setString(4, domicilio.getProvincia());
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO TURNOS(FECHA, ODONTOLOGO_ID) VALUES(?, ?)", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setTimestamp(1, Timestamp.valueOf(turno.getFechaHora()));
+            preparedStatement.setInt(2, turno.getOdontologo().getId());
             preparedStatement.execute();
 
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             while (generatedKeys.next()) {
-                domicilio.setId(generatedKeys.getInt(1));
+                turno.setId(generatedKeys.getInt(1));
             }
 
             connection.commit();
-            LOGGER.info("🏡 Se guardó el domicilio: " + domicilio);
+            LOGGER.info("️🎫 Se guardó al turno: " + turno);
         } catch (Exception e) {
             LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
             e.printStackTrace();
@@ -60,25 +58,25 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
             }
         }
 
-        return domicilio;
+        return turno;
     }
 
     @Override
-    public List<Domicilio> listarTodos() {
-        List<Domicilio> domicilios = new ArrayList<>();
+    public List<Turno> listarTodos() {
+        List<Turno> turnos = new ArrayList<>();
         Connection connection = null;
 
         try {
             connection = H2Connection.getConnection();
 
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM DOMICILIOS");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM TURNOS");
 
-            ResultSet resultSet = ps.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                domicilios.add(crearObjetoDomicilio(resultSet));
+                turnos.add(crearObjetoTurno(resultSet));
             }
 
-            LOGGER.info("🏡 Listando todos los domicilios: " + domicilios);
+            LOGGER.info("🔢 Listando todos los turnos: " + turnos);
         } catch (Exception e) {
             LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
             e.printStackTrace();
@@ -92,7 +90,7 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
             }
         }
 
-        return domicilios;
+        return turnos;
     }
 
     @Override
@@ -103,13 +101,12 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
             connection = H2Connection.getConnection();
             connection.setAutoCommit(false);
 
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM DOMICILIOS WHERE ID = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM TURNOS WHERE ID = ?");
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
 
             connection.commit();
-            LOGGER.info("🚮 Se ha eliminado el domicilio con ID: " + id);
-
+            LOGGER.info("🚮 Se ha eliminado el turno con ID: " + id);
         } catch (Exception e) {
             LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
             e.printStackTrace();
@@ -135,22 +132,22 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
     }
 
     @Override
-    public Domicilio buscarPorId(int id) {
+    public Turno buscarPorId(int id) {
         Connection connection = null;
-        Domicilio domicilio = null;
+        Turno turno = null;
 
         try {
             connection = H2Connection.getConnection();
 
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM DOMICILIOS WHERE ID = ?");
-            preparedStatement.setInt(1, id);
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM TURNOS WHERE ID = ?");
+            ps.setInt(1, id);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
-                domicilio = crearObjetoDomicilio(resultSet);
+                turno = crearObjetoTurno(resultSet);
             }
 
-            LOGGER.info("🏡 Se ha encontrado el domicilio con ID: " + id + ": " + domicilio);
+            LOGGER.info("🎫 Se ha encontrado al turno con ID " + id + ": " + turno);
         } catch (Exception e) {
             LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
             e.printStackTrace();
@@ -164,21 +161,19 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
             }
         }
 
-        return domicilio;
+        return turno;
     }
 
     @Override
-    public Domicilio buscarPorCriterio(String criterio) {
+    public Turno buscarPorCriterio(String criterio) {
         return null;
     }
 
-    private Domicilio crearObjetoDomicilio(ResultSet resultSet) throws SQLException {
-        return new Domicilio(
+    private Turno crearObjetoTurno(ResultSet resultSet) throws SQLException {
+        return new Turno(
                 resultSet.getInt("ID"),
-                resultSet.getString("CALLE"),
-                resultSet.getInt("NUMERO"),
-                resultSet.getString("LOCALIDAD"),
-                resultSet.getString("PROVINCIA")
+                resultSet.getTimestamp("FECHA").toLocalDateTime(),
+                new OdontologoDaoH2().buscarPorId(resultSet.getInt("ODONTOLOGO_ID"))
         );
     }
 }

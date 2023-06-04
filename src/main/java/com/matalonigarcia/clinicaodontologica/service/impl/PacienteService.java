@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class PacienteService implements IPacienteService {
-    private IDao<Paciente> pacienteIDao;
+    private final IDao<Paciente> pacienteIDao;
 
     @Autowired
     public PacienteService(IDao<Paciente> pacienteIDao) {
@@ -25,7 +26,7 @@ public class PacienteService implements IPacienteService {
     }
 
     @Override
-    public List<Paciente> listarPacientes() {
+    public List<Paciente> listarTodosLosPacientes() {
         return pacienteIDao.listarTodos();
     }
 

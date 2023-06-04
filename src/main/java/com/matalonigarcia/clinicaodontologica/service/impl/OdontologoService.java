@@ -2,12 +2,16 @@ package com.matalonigarcia.clinicaodontologica.service.impl;
 
 import com.matalonigarcia.clinicaodontologica.dao.IDao;
 import com.matalonigarcia.clinicaodontologica.entity.Odontologo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class OdontologoService {
-    private IDao<Odontologo> odontologoIDao;
+    private final IDao<Odontologo> odontologoIDao;
 
+    @Autowired
     public OdontologoService(IDao<Odontologo> odontologoIDao) {
         this.odontologoIDao = odontologoIDao;
     }
@@ -20,7 +24,7 @@ public class OdontologoService {
         return odontologoIDao.buscarPorId(id);
     }
 
-    public List<Odontologo> listarOdontologos() {
+    public List<Odontologo> listarTodosLosOdontologos() {
         return odontologoIDao.listarTodos();
     }
 

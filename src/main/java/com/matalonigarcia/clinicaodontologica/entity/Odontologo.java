@@ -53,10 +53,11 @@ public class Odontologo {
 
     @Override
     public String toString() {
-        return "\n🦷 Odontólogo" +
-                " { 🆔 ID: " + id +
-                " | 👨‍⚕️ Número de Matrícula: " + matricula +
-                " | 💬 Nombre: " + nombre +
-                " | ⭐ Apellido: " + apellido + " }";
+        return "👨‍⚕️ Odontólogo" +
+                " [ 🆔 ID: " + id +
+                " | 🔢 Número de Matrícula: " + matricula +
+                " | 📛 Nombre: " + nombre +
+                " | 📛 Apellido: " + apellido +
+                ']';
     }
 }
