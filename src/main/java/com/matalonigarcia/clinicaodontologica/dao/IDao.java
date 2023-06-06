@@ -12,4 +12,6 @@ public interface IDao<T> {
     T buscarPorId(int id);
 
     T buscarPorCriterio(String criterio);
+
+    T actualizar(T t);
 }

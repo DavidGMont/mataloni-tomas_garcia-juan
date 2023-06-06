@@ -170,6 +170,49 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
         return null;
     }
 
+    @Override
+    public Odontologo actualizar(Odontologo odontologo) {
+        Connection connection = null;
+
+        try {
+            connection = H2Connection.getConnection();
+            connection.setAutoCommit(false);
+
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE ODONTOLOGOS SET MATRICULA = ?, NOMBRE = ?, APELLIDO = ? WHERE ID = ?");
+            preparedStatement.setString(1, odontologo.getMatricula());
+            preparedStatement.setString(2, odontologo.getNombre());
+            preparedStatement.setString(3, odontologo.getApellido());
+            preparedStatement.setInt(4, odontologo.getId());
+            preparedStatement.execute();
+
+            connection.commit();
+            LOGGER.warn("🛑 El odontólogo con ID " + odontologo.getId() + " ha sido actualizado: " + odontologo);
+        } catch (Exception e) {
+            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            e.printStackTrace();
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    LOGGER.info("💥 Tuvimos un problema con el registro: " + e.getMessage());
+                    e.printStackTrace();
+                } catch (SQLException ex) {
+                    LOGGER.error("💥 Hay un problema con SQL: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            }
+        } finally {
+            try {
+                assert connection != null;
+                connection.close();
+            } catch (Exception e) {
+                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+
+        return odontologo;
+    }
+
     private Odontologo crearObjetoOdontologo(ResultSet resultSet) throws SQLException {
         return new Odontologo(
                 resultSet.getInt("ID"),

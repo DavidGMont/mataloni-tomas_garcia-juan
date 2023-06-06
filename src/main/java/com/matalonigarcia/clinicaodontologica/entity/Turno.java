@@ -7,6 +7,8 @@ public class Turno {
     private LocalDateTime fechaHora;
     private Odontologo odontologo;
 
+    public Turno() {}
+
     public Turno(int id, LocalDateTime fechaHora, Odontologo odontologo) {
         this.id = id;
         this.fechaHora = fechaHora;

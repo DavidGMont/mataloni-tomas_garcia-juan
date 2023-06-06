@@ -172,6 +172,50 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
         return null;
     }
 
+    @Override
+    public Domicilio actualizar(Domicilio domicilio) {
+        Connection connection = null;
+
+        try {
+            connection = H2Connection.getConnection();
+            connection.setAutoCommit(false);
+
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE DOMICILIOS SET CALLE = ?, NUMERO = ?, LOCALIDAD = ?, PROVINCIA = ? WHERE ID = ?");
+            preparedStatement.setString(1, domicilio.getCalle());
+            preparedStatement.setInt(2, domicilio.getNumero());
+            preparedStatement.setString(3, domicilio.getLocalidad());
+            preparedStatement.setString(4, domicilio.getProvincia());
+            preparedStatement.setInt(5, domicilio.getId());
+            preparedStatement.execute();
+
+            connection.commit();
+            LOGGER.warn("🛑 El domicilio con ID " + domicilio.getId() + " ha sido actualizado: " + domicilio);
+        } catch (Exception e) {
+            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            e.printStackTrace();
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    LOGGER.info("💥 Tuvimos un problema con el registro: " + e.getMessage());
+                    e.printStackTrace();
+                } catch (SQLException ex) {
+                    LOGGER.error("💥 Hay un problema con SQL: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            }
+        } finally {
+            try {
+                assert connection != null;
+                connection.close();
+            } catch (Exception e) {
+                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+
+        return domicilio;
+    }
+
     private Domicilio crearObjetoDomicilio(ResultSet resultSet) throws SQLException {
         return new Domicilio(
                 resultSet.getInt("ID"),

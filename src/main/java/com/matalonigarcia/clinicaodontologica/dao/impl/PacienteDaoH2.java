@@ -202,6 +202,52 @@ public class PacienteDaoH2 implements IDao<Paciente> {
         return paciente;
     }
 
+    @Override
+    public Paciente actualizar(Paciente paciente) {
+        Connection connection = null;
+
+        try {
+            connection = H2Connection.getConnection();
+            connection.setAutoCommit(false);
+
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE PACIENTES SET NOMBRE = ?, APELLIDO = ?, DNI = ?, FECHA = ?, DOMICILIO_ID = ?,  TURNO_ID = ? WHERE ID = ?");
+            preparedStatement.setString(1, paciente.getNombre());
+            preparedStatement.setString(2, paciente.getApellido());
+            preparedStatement.setString(3, paciente.getDni());
+            preparedStatement.setDate(4, Date.valueOf(paciente.getFechaIngreso()));
+            preparedStatement.setInt(5, paciente.getDomicilio().getId());
+            preparedStatement.setInt(6, paciente.getTurno().getId());
+            preparedStatement.setInt(7, paciente.getId());
+            preparedStatement.execute();
+
+            connection.commit();
+            LOGGER.warn("🛑 El paciente con ID " + paciente.getId() + " ha sido actualizado: " + paciente);
+        } catch (Exception e) {
+            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            e.printStackTrace();
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    LOGGER.info("💥 Tuvimos un problema con el registro: " + e.getMessage());
+                    e.printStackTrace();
+                } catch (SQLException ex) {
+                    LOGGER.error("💥 Hay un problema con SQL: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            }
+        } finally {
+            try {
+                assert connection != null;
+                connection.close();
+            } catch (Exception e) {
+                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+
+        return paciente;
+    }
+
     private Paciente crearObjetoPaciente(ResultSet resultSet) throws SQLException {
         return new Paciente(
                 resultSet.getInt("ID"),

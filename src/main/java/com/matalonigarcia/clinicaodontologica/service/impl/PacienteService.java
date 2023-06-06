@@ -17,10 +17,12 @@ public class PacienteService implements IPacienteService {
         this.pacienteIDao = pacienteIDao;
     }
 
-    public Paciente guardarPaciente(Paciente paciente) {
+    @Override
+    public Paciente registrarPaciente(Paciente paciente) {
         return pacienteIDao.guardar(paciente);
     }
 
+    @Override
     public Paciente buscarPacientePorId(int id) {
         return pacienteIDao.buscarPorId(id);
     }
@@ -35,6 +37,12 @@ public class PacienteService implements IPacienteService {
         return pacienteIDao.buscarPorCriterio(dni);
     }
 
+    @Override
+    public Paciente actualizarPaciente(Paciente paciente) {
+        return pacienteIDao.actualizar(paciente);
+    }
+
+    @Override
     public void eliminarPaciente(int id) {
         pacienteIDao.eliminar(id);
     }

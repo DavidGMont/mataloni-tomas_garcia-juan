@@ -169,6 +169,48 @@ public class TurnoDaoH2 implements IDao<Turno> {
         return null;
     }
 
+    @Override
+    public Turno actualizar(Turno turno) {
+        Connection connection = null;
+
+        try {
+            connection = H2Connection.getConnection();
+            connection.setAutoCommit(false);
+
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE TURNOS SET FECHA = ?, ODONTOLOGO_ID = ? WHERE ID = ?");
+            preparedStatement.setTimestamp(1, Timestamp.valueOf(turno.getFechaHora()));
+            preparedStatement.setInt(2, turno.getOdontologo().getId());
+            preparedStatement.setInt(3, turno.getId());
+            preparedStatement.execute();
+
+            connection.commit();
+            LOGGER.warn("🛑 El turno con ID " + turno.getId() + " ha sido actualizado: " + turno);
+        } catch (Exception e) {
+            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            e.printStackTrace();
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    LOGGER.info("💥 Tuvimos un problema con el registro: " + e.getMessage());
+                    e.printStackTrace();
+                } catch (SQLException ex) {
+                    LOGGER.error("💥 Hay un problema con SQL: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            }
+        } finally {
+            try {
+                assert connection != null;
+                connection.close();
+            } catch (Exception e) {
+                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+
+        return turno;
+    }
+
     private Turno crearObjetoTurno(ResultSet resultSet) throws SQLException {
         return new Turno(
                 resultSet.getInt("ID"),
