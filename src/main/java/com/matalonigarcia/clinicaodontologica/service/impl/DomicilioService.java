@@ -1,7 +1,7 @@
 package com.matalonigarcia.clinicaodontologica.service.impl;
 
-import com.matalonigarcia.clinicaodontologica.dao.IDao;
 import com.matalonigarcia.clinicaodontologica.entity.Domicilio;
+import com.matalonigarcia.clinicaodontologica.repository.IDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

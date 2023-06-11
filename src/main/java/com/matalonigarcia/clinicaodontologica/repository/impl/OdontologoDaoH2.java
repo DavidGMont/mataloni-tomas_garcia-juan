@@ -1,17 +1,17 @@
-package com.matalonigarcia.clinicaodontologica.dao.impl;
+package com.matalonigarcia.clinicaodontologica.repository.impl;
 
-import com.matalonigarcia.clinicaodontologica.dao.H2Connection;
-import com.matalonigarcia.clinicaodontologica.dao.IDao;
 import com.matalonigarcia.clinicaodontologica.entity.Odontologo;
+import com.matalonigarcia.clinicaodontologica.repository.H2Connection;
+import com.matalonigarcia.clinicaodontologica.repository.IDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Repository
 public class OdontologoDaoH2 implements IDao<Odontologo> {
     private static final Logger LOGGER = LoggerFactory.getLogger(OdontologoDaoH2.class);
 
@@ -35,17 +35,17 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
             }
 
             connection.commit();
-            LOGGER.info("👨‍⚕️ Se guardó al odontólogo: " + odontologo);
+            LOGGER.info("👨‍⚕️ Se guardó al odontólogo: {}", odontologo);
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
             if (connection != null) {
                 try {
                     connection.rollback();
-                    LOGGER.info("💥 Tuvimos un problema con el registro: " + e.getMessage());
+                    LOGGER.info("💥 Tuvimos un problema con el registro: {}", e.getMessage());
                     e.printStackTrace();
                 } catch (SQLException ex) {
-                    LOGGER.error("💥 Hay un problema con SQL: " + ex.getMessage());
+                    LOGGER.error("💥 Hay un problema con SQL: {}", ex.getMessage());
                     ex.printStackTrace();
                 }
             }
@@ -54,7 +54,7 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -77,16 +77,16 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
                 odontologos.add(crearObjetoOdontologo(resultSet));
             }
 
-            LOGGER.info("🦷 Listando todos los odontólogos: " + odontologos);
+            LOGGER.info("🦷 Listando todos los odontólogos: {}", odontologos);
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
         } finally {
             try {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -107,17 +107,17 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
             preparedStatement.execute();
 
             connection.commit();
-            LOGGER.info("🚮 Se ha eliminado al odontólogo con ID: " + id);
+            LOGGER.info("🚮 Se ha eliminado al odontólogo con ID: {}", id);
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
             if (connection != null) {
                 try {
                     connection.rollback();
-                    LOGGER.info("💥 Tuvimos un problema con el registro: " + e.getMessage());
+                    LOGGER.info("💥 Tuvimos un problema con el registro: {}", e.getMessage());
                     e.printStackTrace();
                 } catch (SQLException ex) {
-                    LOGGER.error("💥 Hay un problema con SQL: " + ex.getMessage());
+                    LOGGER.error("💥 Hay un problema con SQL: {}", ex.getMessage());
                     ex.printStackTrace();
                 }
             }
@@ -126,7 +126,7 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -148,16 +148,16 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
                 odontologo = crearObjetoOdontologo(resultSet);
             }
 
-            LOGGER.info("👨‍⚕️ Se ha encontrado al odontólogo con ID " + id + ": " + odontologo);
+            LOGGER.info("👨‍⚕️ Se ha encontrado al odontólogo con ID {}: {}", id, odontologo);
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
         } finally {
             try {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -186,17 +186,17 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
             preparedStatement.execute();
 
             connection.commit();
-            LOGGER.warn("🛑 El odontólogo con ID " + odontologo.getId() + " ha sido actualizado: " + odontologo);
+            LOGGER.warn("🛑 El odontólogo con ID {} ha sido actualizado: {}", odontologo.getId(), odontologo);
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
             if (connection != null) {
                 try {
                     connection.rollback();
-                    LOGGER.info("💥 Tuvimos un problema con el registro: " + e.getMessage());
+                    LOGGER.info("💥 Tuvimos un problema con el registro: {}", e.getMessage());
                     e.printStackTrace();
                 } catch (SQLException ex) {
-                    LOGGER.error("💥 Hay un problema con SQL: " + ex.getMessage());
+                    LOGGER.error("💥 Hay un problema con SQL: {}", ex.getMessage());
                     ex.printStackTrace();
                 }
             }
@@ -205,7 +205,7 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }

@@ -1,18 +1,19 @@
 package com.matalonigarcia.clinicaodontologica.service;
 
+import com.matalonigarcia.clinicaodontologica.dto.OdontologoDto;
 import com.matalonigarcia.clinicaodontologica.entity.Odontologo;
 
 import java.util.List;
 
 public interface IOdontologoService {
 
-    Odontologo registrarOdontologo(Odontologo odontologo);
+    OdontologoDto registrarOdontologo(Odontologo odontologo);
 
-    Odontologo buscarOdontologoPorId(int id);
+    OdontologoDto buscarOdontologoPorId(int id);
 
-    List<Odontologo> listarTodosLosOdontologos();
+    List<OdontologoDto> listarTodosLosOdontologos();
 
-    Odontologo actualizarOdontologo(Odontologo odontologo);
+    OdontologoDto actualizarOdontologo(Odontologo odontologo);
 
     void eliminarOdontologo(int id);
 }

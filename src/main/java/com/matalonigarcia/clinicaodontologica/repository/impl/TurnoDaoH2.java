@@ -1,17 +1,17 @@
-package com.matalonigarcia.clinicaodontologica.dao.impl;
+package com.matalonigarcia.clinicaodontologica.repository.impl;
 
-import com.matalonigarcia.clinicaodontologica.dao.H2Connection;
-import com.matalonigarcia.clinicaodontologica.dao.IDao;
 import com.matalonigarcia.clinicaodontologica.entity.Turno;
+import com.matalonigarcia.clinicaodontologica.repository.H2Connection;
+import com.matalonigarcia.clinicaodontologica.repository.IDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Repository
 public class TurnoDaoH2 implements IDao<Turno> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TurnoDaoH2.class);
 
@@ -23,9 +23,10 @@ public class TurnoDaoH2 implements IDao<Turno> {
             connection = H2Connection.getConnection();
             connection.setAutoCommit(false);
 
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO TURNOS(FECHA, ODONTOLOGO_ID) VALUES(?, ?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO TURNOS(FECHA, ODONTOLOGO_ID, PACIENTE_ID) VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setTimestamp(1, Timestamp.valueOf(turno.getFechaHora()));
             preparedStatement.setInt(2, turno.getOdontologo().getId());
+            preparedStatement.setInt(3, turno.getPaciente().getId());
             preparedStatement.execute();
 
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
@@ -34,17 +35,17 @@ public class TurnoDaoH2 implements IDao<Turno> {
             }
 
             connection.commit();
-            LOGGER.info("️🎫 Se guardó al turno: " + turno);
+            LOGGER.info("️🎫 Se guardó al turno: {}", turno);
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
             if (connection != null) {
                 try {
                     connection.rollback();
-                    LOGGER.info("💥 Tuvimos un problema con el registro: " + e.getMessage());
+                    LOGGER.info("💥 Tuvimos un problema con el registro: {}", e.getMessage());
                     e.printStackTrace();
                 } catch (SQLException ex) {
-                    LOGGER.error("💥 Hay un problema con SQL: " + ex.getMessage());
+                    LOGGER.error("💥 Hay un problema con SQL: {}", ex.getMessage());
                     ex.printStackTrace();
                 }
             }
@@ -53,7 +54,7 @@ public class TurnoDaoH2 implements IDao<Turno> {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -76,16 +77,16 @@ public class TurnoDaoH2 implements IDao<Turno> {
                 turnos.add(crearObjetoTurno(resultSet));
             }
 
-            LOGGER.info("🔢 Listando todos los turnos: " + turnos);
+            LOGGER.info("🔢 Listando todos los turnos: {}", turnos);
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
         } finally {
             try {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -106,17 +107,17 @@ public class TurnoDaoH2 implements IDao<Turno> {
             preparedStatement.execute();
 
             connection.commit();
-            LOGGER.info("🚮 Se ha eliminado el turno con ID: " + id);
+            LOGGER.info("🚮 Se ha eliminado el turno con ID: {}", id);
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
             if (connection != null) {
                 try {
                     connection.rollback();
-                    LOGGER.info("💥 Tuvimos un problema con el registro: " + e.getMessage());
+                    LOGGER.info("💥 Tuvimos un problema con el registro: {}", e.getMessage());
                     e.printStackTrace();
                 } catch (SQLException ex) {
-                    LOGGER.error("💥 Hay un problema con SQL: " + ex.getMessage());
+                    LOGGER.error("💥 Hay un problema con SQL: {}", ex.getMessage());
                     ex.printStackTrace();
                 }
             }
@@ -125,7 +126,7 @@ public class TurnoDaoH2 implements IDao<Turno> {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -147,16 +148,16 @@ public class TurnoDaoH2 implements IDao<Turno> {
                 turno = crearObjetoTurno(resultSet);
             }
 
-            LOGGER.info("🎫 Se ha encontrado al turno con ID " + id + ": " + turno);
+            LOGGER.info("🎫 Se ha encontrado al turno con ID {} : {}", id, turno);
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
         } finally {
             try {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -177,24 +178,25 @@ public class TurnoDaoH2 implements IDao<Turno> {
             connection = H2Connection.getConnection();
             connection.setAutoCommit(false);
 
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE TURNOS SET FECHA = ?, ODONTOLOGO_ID = ? WHERE ID = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE TURNOS SET FECHA = ?, ODONTOLOGO_ID = ?, PACIENTE_ID = ? WHERE ID = ?");
             preparedStatement.setTimestamp(1, Timestamp.valueOf(turno.getFechaHora()));
             preparedStatement.setInt(2, turno.getOdontologo().getId());
-            preparedStatement.setInt(3, turno.getId());
+            preparedStatement.setInt(3, turno.getPaciente().getId());
+            preparedStatement.setInt(4, turno.getId());
             preparedStatement.execute();
 
             connection.commit();
-            LOGGER.warn("🛑 El turno con ID " + turno.getId() + " ha sido actualizado: " + turno);
+            LOGGER.warn("🛑 El turno con ID {} ha sido actualizado: {}", turno.getId(), turno);
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
             if (connection != null) {
                 try {
                     connection.rollback();
-                    LOGGER.info("💥 Tuvimos un problema con el registro: " + e.getMessage());
+                    LOGGER.info("💥 Tuvimos un problema con el registro: {}", e.getMessage());
                     e.printStackTrace();
                 } catch (SQLException ex) {
-                    LOGGER.error("💥 Hay un problema con SQL: " + ex.getMessage());
+                    LOGGER.error("💥 Hay un problema con SQL: {}", ex.getMessage());
                     ex.printStackTrace();
                 }
             }
@@ -203,7 +205,7 @@ public class TurnoDaoH2 implements IDao<Turno> {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -215,7 +217,8 @@ public class TurnoDaoH2 implements IDao<Turno> {
         return new Turno(
                 resultSet.getInt("ID"),
                 resultSet.getTimestamp("FECHA").toLocalDateTime(),
-                new OdontologoDaoH2().buscarPorId(resultSet.getInt("ODONTOLOGO_ID"))
+                new OdontologoDaoH2().buscarPorId(resultSet.getInt("ODONTOLOGO_ID")),
+                new PacienteDaoH2().buscarPorId(resultSet.getInt("PACIENTE_ID"))
         );
     }
 }

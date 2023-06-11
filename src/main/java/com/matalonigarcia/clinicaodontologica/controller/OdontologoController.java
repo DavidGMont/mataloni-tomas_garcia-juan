@@ -1,8 +1,11 @@
 package com.matalonigarcia.clinicaodontologica.controller;
 
+import com.matalonigarcia.clinicaodontologica.dto.OdontologoDto;
 import com.matalonigarcia.clinicaodontologica.entity.Odontologo;
 import com.matalonigarcia.clinicaodontologica.service.impl.OdontologoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,23 +21,32 @@ public class OdontologoController {
     }
 
     @PostMapping("/registrar")
-    public Odontologo registrarOdontologo(@RequestBody Odontologo odontologo) {
-        return odontologoService.registrarOdontologo(odontologo);
+    public ResponseEntity<OdontologoDto> registrarOdontologo(@RequestBody Odontologo odontologo) {
+        ResponseEntity<OdontologoDto> response = ResponseEntity.badRequest().build();
+        OdontologoDto odontologoDto = odontologoService.registrarOdontologo(odontologo);
+        if (odontologoDto != null) response = ResponseEntity.status(HttpStatus.CREATED).body(odontologoDto);
+        return response;
     }
 
     @GetMapping("/{id}")
-    public Odontologo buscarOdontologoPorId(@PathVariable int id) {
-        return odontologoService.buscarOdontologoPorId(id);
+    public ResponseEntity<OdontologoDto> buscarOdontologoPorId(@PathVariable int id) {
+        ResponseEntity<OdontologoDto> response = ResponseEntity.badRequest().build();
+        OdontologoDto odontologoDto = odontologoService.buscarOdontologoPorId(id);
+        if (odontologoDto != null) response = ResponseEntity.ok(odontologoDto);
+        return response;
     }
 
     @GetMapping
-    public List<Odontologo> listarTodosLosOdontologos() {
+    public List<OdontologoDto> listarTodosLosOdontologos() {
         return odontologoService.listarTodosLosOdontologos();
     }
 
     @PutMapping("/actualizar")
-    public Odontologo actualizarOdontologo(@RequestBody Odontologo odontologo) {
-        return odontologoService.actualizarOdontologo(odontologo);
+    public ResponseEntity<OdontologoDto> actualizarOdontologo(@RequestBody Odontologo odontologo) {
+        ResponseEntity<OdontologoDto> response = ResponseEntity.badRequest().build();
+        OdontologoDto odontologoDto = odontologoService.actualizarOdontologo(odontologo);
+        if (odontologoDto != null) response = ResponseEntity.accepted().body(odontologoDto);
+        return response;
     }
 
     @DeleteMapping("/eliminar/{id}")

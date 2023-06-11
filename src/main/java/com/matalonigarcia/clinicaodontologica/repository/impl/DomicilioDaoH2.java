@@ -1,17 +1,17 @@
-package com.matalonigarcia.clinicaodontologica.dao.impl;
+package com.matalonigarcia.clinicaodontologica.repository.impl;
 
-import com.matalonigarcia.clinicaodontologica.dao.H2Connection;
-import com.matalonigarcia.clinicaodontologica.dao.IDao;
 import com.matalonigarcia.clinicaodontologica.entity.Domicilio;
+import com.matalonigarcia.clinicaodontologica.repository.H2Connection;
+import com.matalonigarcia.clinicaodontologica.repository.IDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Repository
 public class DomicilioDaoH2 implements IDao<Domicilio> {
     private static final Logger LOGGER = LoggerFactory.getLogger(DomicilioDaoH2.class);
 
@@ -36,17 +36,17 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
             }
 
             connection.commit();
-            LOGGER.info("🏡 Se guardó el domicilio: " + domicilio);
+            LOGGER.info("🏡 Se guardó el domicilio: {}", domicilio);
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
             if (connection != null) {
                 try {
                     connection.rollback();
-                    LOGGER.info("💥 Tuvimos un problema con el registro: " + e.getMessage());
+                    LOGGER.info("💥 Tuvimos un problema con el registro: {}", e.getMessage());
                     e.printStackTrace();
                 } catch (SQLException ex) {
-                    LOGGER.error("💥 Hay un problema con SQL: " + ex.getMessage());
+                    LOGGER.error("💥 Hay un problema con SQL: {}", ex.getMessage());
                     ex.printStackTrace();
                 }
             }
@@ -55,7 +55,7 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -78,16 +78,16 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
                 domicilios.add(crearObjetoDomicilio(resultSet));
             }
 
-            LOGGER.info("🏡 Listando todos los domicilios: " + domicilios);
+            LOGGER.info("🏡 Listando todos los domicilios: {}", domicilios);
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
         } finally {
             try {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -108,18 +108,18 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
             preparedStatement.execute();
 
             connection.commit();
-            LOGGER.info("🚮 Se ha eliminado el domicilio con ID: " + id);
+            LOGGER.info("🚮 Se ha eliminado el domicilio con ID: {}", id);
 
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
             if (connection != null) {
                 try {
                     connection.rollback();
-                    LOGGER.info("💥 Tuvimos un problema con el registro: " + e.getMessage());
+                    LOGGER.info("💥 Tuvimos un problema con el registro: {}", e.getMessage());
                     e.printStackTrace();
                 } catch (SQLException ex) {
-                    LOGGER.error("💥 Hay un problema con SQL: " + ex.getMessage());
+                    LOGGER.error("💥 Hay un problema con SQL: {}", ex.getMessage());
                     ex.printStackTrace();
                 }
             }
@@ -128,7 +128,7 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -150,16 +150,16 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
                 domicilio = crearObjetoDomicilio(resultSet);
             }
 
-            LOGGER.info("🏡 Se ha encontrado el domicilio con ID: " + id + ": " + domicilio);
+            LOGGER.info("🏡 Se ha encontrado el domicilio con ID {}: {}", id, domicilio);
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
         } finally {
             try {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -189,17 +189,17 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
             preparedStatement.execute();
 
             connection.commit();
-            LOGGER.warn("🛑 El domicilio con ID " + domicilio.getId() + " ha sido actualizado: " + domicilio);
+            LOGGER.warn("🛑 El domicilio con ID {} ha sido actualizado: {}", domicilio.getId(), domicilio);
         } catch (Exception e) {
-            LOGGER.error("💥 Te encontraste con un gran error: " + e.getMessage());
+            LOGGER.error("💥 Te encontraste con un gran error: {}", e.getMessage());
             e.printStackTrace();
             if (connection != null) {
                 try {
                     connection.rollback();
-                    LOGGER.info("💥 Tuvimos un problema con el registro: " + e.getMessage());
+                    LOGGER.info("💥 Tuvimos un problema con el registro: {}", e.getMessage());
                     e.printStackTrace();
                 } catch (SQLException ex) {
-                    LOGGER.error("💥 Hay un problema con SQL: " + ex.getMessage());
+                    LOGGER.error("💥 Hay un problema con SQL: {}", ex.getMessage());
                     ex.printStackTrace();
                 }
             }
@@ -208,7 +208,7 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
                 assert connection != null;
                 connection.close();
             } catch (Exception e) {
-                LOGGER.error("🚫 No se pudo cerrar la conexión: " + e.getMessage());
+                LOGGER.error("🚫 No se pudo cerrar la conexión: {}", e.getMessage());
                 e.printStackTrace();
             }
         }

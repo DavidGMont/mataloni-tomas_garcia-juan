@@ -1,20 +1,21 @@
 package com.matalonigarcia.clinicaodontologica.service;
 
+import com.matalonigarcia.clinicaodontologica.dto.PacienteDto;
 import com.matalonigarcia.clinicaodontologica.entity.Paciente;
 
 import java.util.List;
 
 public interface IPacienteService {
 
-    Paciente registrarPaciente(Paciente paciente);
+    PacienteDto registrarPaciente(Paciente paciente);
 
-    Paciente buscarPacientePorId(int id);
+    PacienteDto buscarPacientePorId(int id);
 
-    Paciente buscarPacientePorDni(String dni);
+    PacienteDto buscarPacientePorDni(String dni);
 
-    List<Paciente> listarTodosLosPacientes();
+    List<PacienteDto> listarTodosLosPacientes();
 
-    Paciente actualizarPaciente(Paciente paciente);
+    PacienteDto actualizarPaciente(Paciente paciente);
 
     void eliminarPaciente(int id);
 }

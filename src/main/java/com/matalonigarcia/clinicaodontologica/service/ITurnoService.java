@@ -1,18 +1,19 @@
 package com.matalonigarcia.clinicaodontologica.service;
 
+import com.matalonigarcia.clinicaodontologica.dto.TurnoDto;
 import com.matalonigarcia.clinicaodontologica.entity.Turno;
 
 import java.util.List;
 
 public interface ITurnoService {
 
-    Turno registrarTurno(Turno turno);
+    TurnoDto registrarTurno(Turno turno);
 
-    Turno buscarTurnoPorId(int id);
+    TurnoDto buscarTurnoPorId(int id);
 
-    List<Turno> listarTodosLosTurnos();
+    List<TurnoDto> listarTodosLosTurnos();
 
-    Turno actualizarTurno(Turno turno);
+    TurnoDto actualizarTurno(Turno turno);
 
     void eliminarTurno(int id);
 }

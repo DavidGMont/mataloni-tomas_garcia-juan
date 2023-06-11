@@ -1,4 +1,4 @@
-package com.matalonigarcia.clinicaodontologica.dao;
+package com.matalonigarcia.clinicaodontologica.repository;
 
 import java.util.List;
 

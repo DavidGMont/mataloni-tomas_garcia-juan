@@ -9,27 +9,24 @@ public class Paciente {
     private String dni;
     private LocalDate fechaIngreso;
     private Domicilio domicilio;
-    private Turno turno;
 
     public Paciente() {}
 
-    public Paciente(int id, String nombre, String apellido, String dni, LocalDate fechaIngreso, Domicilio domicilio, Turno turno) {
+    public Paciente(int id, String nombre, String apellido, String dni, LocalDate fechaIngreso, Domicilio domicilio) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
         this.fechaIngreso = fechaIngreso;
         this.domicilio = domicilio;
-        this.turno = turno;
     }
 
-    public Paciente(String nombre, String apellido, String dni, LocalDate fechaIngreso, Domicilio domicilio, Turno turno) {
+    public Paciente(String nombre, String apellido, String dni, LocalDate fechaIngreso, Domicilio domicilio) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
         this.fechaIngreso = fechaIngreso;
         this.domicilio = domicilio;
-        this.turno = turno;
     }
 
     public int getId() {
@@ -80,14 +77,6 @@ public class Paciente {
         this.domicilio = domicilio;
     }
 
-    public Turno getTurno() {
-        return turno;
-    }
-
-    public void setTurno(Turno turno) {
-        this.turno = turno;
-    }
-
     @Override
     public String toString() {
         return "🚹 Paciente [" +
@@ -97,7 +86,6 @@ public class Paciente {
                 " | 🔢 DNI: " + dni +
                 " | 📅 Fecha de Ingreso: " + fechaIngreso +
                 " | 🏡 Domicilio: " + domicilio +
-                " | 🔜 Turno: " + turno +
                 ']';
     }
 }
