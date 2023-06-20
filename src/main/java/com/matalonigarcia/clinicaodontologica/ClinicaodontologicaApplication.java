@@ -15,5 +15,4 @@ public class ClinicaodontologicaApplication {
         SpringApplication.run(ClinicaodontologicaApplication.class, args);
         LOGGER.info("🦷 La Clínica se está abriendo...");
     }
-
 }

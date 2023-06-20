@@ -9,7 +9,7 @@ public interface IPacienteService {
 
     PacienteDto registrarPaciente(Paciente paciente);
 
-    PacienteDto buscarPacientePorId(int id);
+    PacienteDto buscarPacientePorId(Long id);
 
     PacienteDto buscarPacientePorDni(String dni);
 
@@ -17,5 +17,5 @@ public interface IPacienteService {
 
     PacienteDto actualizarPaciente(Paciente paciente);
 
-    void eliminarPaciente(int id);
+    void eliminarPaciente(Long id);
 }

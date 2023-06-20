@@ -1,21 +1,31 @@
 package com.matalonigarcia.clinicaodontologica.entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
+@Entity
+@Table(name = "DOMICILIOS")
 public class Domicilio {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Size(max = 50, message = "El nombre de la calle puede tener hasta 50 caracteres")
+    @Pattern(regexp = "[\\p{IsLatin}+?\\-' .#0-9]+", flags = Pattern.Flag.UNICODE_CASE)
+    @NotNull
     private String calle;
     private int numero;
+    @Size(max = 50, message = "El nombre de la localidad puede tener hasta 50 caracteres")
+    @Pattern(regexp = "[\\p{IsLatin}+?\\-' ]+", flags = Pattern.Flag.UNICODE_CASE)
+    @NotNull
     private String localidad;
+    @Size(max = 50, message = "El nombre de la provincia puede tener hasta 50 caracteres")
+    @Pattern(regexp = "[\\p{IsLatin}+?\\-' ]+", flags = Pattern.Flag.UNICODE_CASE)
+    @NotNull
     private String provincia;
 
     public Domicilio() {}
-
-    public Domicilio(int id, String calle, int numero, String localidad, String provincia) {
-        this.id = id;
-        this.calle = calle;
-        this.numero = numero;
-        this.localidad = localidad;
-        this.provincia = provincia;
-    }
 
     public Domicilio(String calle, int numero, String localidad, String provincia) {
         this.calle = calle;
@@ -24,12 +34,8 @@ public class Domicilio {
         this.provincia = provincia;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getCalle() {
@@ -62,16 +68,5 @@ public class Domicilio {
 
     public void setProvincia(String provincia) {
         this.provincia = provincia;
-    }
-
-    @Override
-    public String toString() {
-        return "🏡 Domicilio [" +
-                "🆔 ID: " + id +
-                " | 🌇 Calle: " + calle +
-                " | 🔢 Número: " + numero +
-                " | 🗾 Localidad: " + localidad +
-                " | 🌍 Provincia: " + provincia +
-                ']';
     }
 }

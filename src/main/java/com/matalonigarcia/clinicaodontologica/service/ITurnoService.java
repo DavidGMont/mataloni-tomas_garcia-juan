@@ -9,11 +9,11 @@ public interface ITurnoService {
 
     TurnoDto registrarTurno(Turno turno);
 
-    TurnoDto buscarTurnoPorId(int id);
+    TurnoDto buscarTurnoPorId(Long id);
 
     List<TurnoDto> listarTodosLosTurnos();
 
     TurnoDto actualizarTurno(Turno turno);
 
-    void eliminarTurno(int id);
+    void eliminarTurno(Long id);
 }

@@ -1,19 +1,29 @@
 package com.matalonigarcia.clinicaodontologica.entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
+@Entity
+@Table(name = "ODONTOLOGOS")
 public class Odontologo {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Size(max = 15)
+    @Pattern(regexp = "^\\d+$")
     private String matricula;
+    @Size(max = 50, message = "El nombre puede tener hasta 50 caracteres")
+    @Pattern(regexp = "[\\p{IsLatin}+?\\-' ]+", flags = Pattern.Flag.UNICODE_CASE)
+    @NotNull
     private String nombre;
+    @Size(max = 50, message = "El apellido puede tener hasta 50 caracteres")
+    @Pattern(regexp = "[\\p{IsLatin}+?\\-' ]+", flags = Pattern.Flag.UNICODE_CASE)
+    @NotNull
     private String apellido;
 
     public Odontologo() {}
-
-    public Odontologo(int id, String matricula, String nombre, String apellido) {
-        this.id = id;
-        this.matricula = matricula;
-        this.nombre = nombre;
-        this.apellido = apellido;
-    }
 
     public Odontologo(String matricula, String nombre, String apellido) {
         this.matricula = matricula;
@@ -21,12 +31,8 @@ public class Odontologo {
         this.apellido = apellido;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getMatricula() {
@@ -51,15 +57,5 @@ public class Odontologo {
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
-    }
-
-    @Override
-    public String toString() {
-        return "👨‍⚕️ Odontólogo" +
-                " [ 🆔 ID: " + id +
-                " | 🔢 Número de Matrícula: " + matricula +
-                " | 📛 Nombre: " + nombre +
-                " | 📛 Apellido: " + apellido +
-                ']';
     }
 }

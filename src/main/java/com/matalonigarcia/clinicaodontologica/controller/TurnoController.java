@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/turnos")
 public class TurnoController {
@@ -29,7 +30,7 @@ public class TurnoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TurnoDto> buscarTurnoPorId(@PathVariable int id) {
+    public ResponseEntity<TurnoDto> buscarTurnoPorId(@PathVariable Long id) {
         ResponseEntity<TurnoDto> response = ResponseEntity.badRequest().build();
         TurnoDto turnoDto = turnoService.buscarTurnoPorId(id);
         if (turnoDto != null) response = ResponseEntity.ok(turnoDto);
@@ -45,12 +46,17 @@ public class TurnoController {
     public ResponseEntity<TurnoDto> actualizarTurno(@RequestBody Turno turno) {
         ResponseEntity<TurnoDto> response = ResponseEntity.badRequest().build();
         TurnoDto turnoDto = turnoService.actualizarTurno(turno);
-        if (turnoDto != null) response = ResponseEntity.accepted().body(turnoDto);
+        if (turnoDto != null) response = ResponseEntity.ok(turnoDto);
         return response;
     }
 
     @DeleteMapping("/eliminar/{id}")
-    public void eliminarTurno(@PathVariable int id) {
-        turnoService.eliminarTurno(id);
+    public ResponseEntity<?> eliminarTurno(@PathVariable Long id) {
+        ResponseEntity<?> response = ResponseEntity.notFound().build();
+        if (buscarTurnoPorId(id).getStatusCode().is2xxSuccessful()) {
+            turnoService.eliminarTurno(id);
+            response = ResponseEntity.ok().build();
+        }
+        return response;
     }
 }

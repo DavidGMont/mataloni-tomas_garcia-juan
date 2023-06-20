@@ -5,13 +5,15 @@ import com.matalonigarcia.clinicaodontologica.entity.Odontologo;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OdontologoDto {
+    private Long id;
     private String matricula;
     private String nombre;
     private String apellido;
 
     public OdontologoDto() {}
 
-    public OdontologoDto(String matricula, String nombre, String apellido) {
+    public OdontologoDto(Long id, String matricula, String nombre, String apellido) {
+        this.id = id;
         this.matricula = matricula;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -19,10 +21,19 @@ public class OdontologoDto {
 
     public static OdontologoDto fromOdontologo(Odontologo odontologo) {
         return new OdontologoDto(
+                odontologo.getId(),
                 odontologo.getMatricula(),
                 odontologo.getNombre(),
                 odontologo.getApellido()
         );
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getMatricula() {
@@ -47,5 +58,15 @@ public class OdontologoDto {
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    @Override
+    public String toString() {
+        return "👨‍⚕️ Odontólogo" +
+                " [ 🆔 ID: " + id +
+                " | 🔢 Número de Matrícula: " + matricula +
+                " | 📛 Nombre: " + nombre +
+                " | 📛 Apellido: " + apellido +
+                ']';
     }
 }

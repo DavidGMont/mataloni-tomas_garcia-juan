@@ -1,25 +1,39 @@
 package com.matalonigarcia.clinicaodontologica.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "PACIENTES")
 public class Paciente {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Size(max = 50, message = "El nombre puede tener hasta 50 caracteres")
+    @Pattern(regexp = "[\\p{IsLatin}+?\\-' ]+", flags = Pattern.Flag.UNICODE_CASE)
+    @NotNull
     private String nombre;
+    @Size(max = 50, message = "El apellido puede tener hasta 50 caracteres")
+    @Pattern(regexp = "[\\p{IsLatin}+?\\-' ]+", flags = Pattern.Flag.UNICODE_CASE)
+    @NotNull
     private String apellido;
+    @Size(max = 12)
+    @Pattern(regexp = "^\\d+$")
     private String dni;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @FutureOrPresent
     private LocalDate fechaIngreso;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "domicilio_id")
     private Domicilio domicilio;
 
     public Paciente() {}
-
-    public Paciente(int id, String nombre, String apellido, String dni, LocalDate fechaIngreso, Domicilio domicilio) {
-        this.id = id;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.dni = dni;
-        this.fechaIngreso = fechaIngreso;
-        this.domicilio = domicilio;
-    }
 
     public Paciente(String nombre, String apellido, String dni, LocalDate fechaIngreso, Domicilio domicilio) {
         this.nombre = nombre;
@@ -29,12 +43,8 @@ public class Paciente {
         this.domicilio = domicilio;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNombre() {
@@ -75,17 +85,5 @@ public class Paciente {
 
     public void setDomicilio(Domicilio domicilio) {
         this.domicilio = domicilio;
-    }
-
-    @Override
-    public String toString() {
-        return "🚹 Paciente [" +
-                "🆔 ID: " + id +
-                " | 📛 Nombre: " + nombre +
-                " | 📛 Apellido: " + apellido +
-                " | 🔢 DNI: " + dni +
-                " | 📅 Fecha de Ingreso: " + fechaIngreso +
-                " | 🏡 Domicilio: " + domicilio +
-                ']';
     }
 }

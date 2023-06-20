@@ -5,6 +5,7 @@ import com.matalonigarcia.clinicaodontologica.entity.Domicilio;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DomicilioDto {
+    private Long id;
     private String calle;
     private int numero;
     private String localidad;
@@ -12,7 +13,8 @@ public class DomicilioDto {
 
     public DomicilioDto() {}
 
-    public DomicilioDto(String calle, int numero, String localidad, String provincia) {
+    public DomicilioDto(Long id, String calle, int numero, String localidad, String provincia) {
+        this.id = id;
         this.calle = calle;
         this.numero = numero;
         this.localidad = localidad;
@@ -21,11 +23,20 @@ public class DomicilioDto {
 
     public static DomicilioDto fromDomicilio(Domicilio domicilio) {
         return new DomicilioDto(
+                domicilio.getId(),
                 domicilio.getCalle(),
                 domicilio.getNumero(),
                 domicilio.getLocalidad(),
                 domicilio.getProvincia()
         );
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCalle() {
@@ -58,5 +69,16 @@ public class DomicilioDto {
 
     public void setProvincia(String provincia) {
         this.provincia = provincia;
+    }
+
+    @Override
+    public String toString() {
+        return "🏡 Domicilio [" +
+                "🆔 ID: " + id +
+                " | 🌇 Calle: " + calle +
+                " | 🔢 Número: " + numero +
+                " | 🗾 Localidad: " + localidad +
+                " | 🌍 Provincia: " + provincia +
+                ']';
     }
 }

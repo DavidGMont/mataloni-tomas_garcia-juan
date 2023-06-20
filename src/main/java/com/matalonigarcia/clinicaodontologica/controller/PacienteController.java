@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/pacientes")
 public class PacienteController {
@@ -29,7 +30,7 @@ public class PacienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PacienteDto> buscarPacientePorId(@PathVariable int id) {
+    public ResponseEntity<PacienteDto> buscarPacientePorId(@PathVariable Long id) {
         ResponseEntity<PacienteDto> response = ResponseEntity.badRequest().build();
         PacienteDto pacienteDto = pacienteService.buscarPacientePorId(id);
         if (pacienteDto != null) response = ResponseEntity.ok(pacienteDto);
@@ -53,12 +54,17 @@ public class PacienteController {
     public ResponseEntity<PacienteDto> actualizarPaciente(@RequestBody Paciente paciente) {
         ResponseEntity<PacienteDto> response = ResponseEntity.badRequest().build();
         PacienteDto pacienteDto = pacienteService.actualizarPaciente(paciente);
-        if (pacienteDto != null) response = ResponseEntity.status(HttpStatus.ACCEPTED).body(pacienteDto);
+        if (pacienteDto != null) response = ResponseEntity.ok(pacienteDto);
         return response;
     }
 
     @DeleteMapping("/eliminar/{id}")
-    public void eliminarPaciente(@PathVariable int id) {
-        pacienteService.eliminarPaciente(id);
+    public ResponseEntity<?> eliminarPaciente(@PathVariable Long id) {
+        ResponseEntity<?> response = ResponseEntity.notFound().build();
+        if (buscarPacientePorId(id).getStatusCode().is2xxSuccessful()) {
+            pacienteService.eliminarPaciente(id);
+            response = ResponseEntity.ok().build();
+        }
+        return response;
     }
 }
