@@ -1,60 +1,47 @@
 package com.matalonigarcia.clinicaodontologica.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "TURNOS")
+@NoArgsConstructor(force = true)
+@RequiredArgsConstructor
+@Getter
+@Setter
 public class Turno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(value = AccessLevel.NONE)
+    @Schema(title = "ID", description = "Valor autogenerado por la base de datos.", example = "154")
     private Long id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    @FutureOrPresent
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    @FutureOrPresent(message = "🕔 La fecha y hora ingresada es inválida. Por favor ingresa una fecha y hora que " +
+            "sea igual o posterior a la fecha y hora actual.")
+    @NotNull(message = "🕔 Por favor ingresa una fecha y hora, esta no puede ser nula.")
+    @NonNull
+    @Schema(title = "Fecha y Hora", description = "La fecha y hora en que programaste tu turno.",
+            example = "2023-06-29T13:25")
     private LocalDateTime fechaHora;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "paciente_id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "paciente_id", nullable = false)
+    @NotNull(message = "👩 Por favor ingresa un paciente, este no puede ser nulo.")
+    @NonNull
+    @Schema(title = "Paciente", description = "La información de tu paciente.")
     private Paciente paciente;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "odontologo_id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "odontologo_id", nullable = false)
+    @NotNull(message = "👨‍⚕️ Por favor ingresa un odontólogo, este no puede ser nulo.")
+    @NonNull
+    @Schema(title = "Odontólogo", description = "La información de tu odontólogo.")
     private Odontologo odontologo;
-
-    public Turno() {}
-
-    public Turno(LocalDateTime fechaHora, Paciente paciente, Odontologo odontologo) {
-        this.fechaHora = fechaHora;
-        this.paciente = paciente;
-        this.odontologo = odontologo;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public LocalDateTime getFechaHora() {
-        return fechaHora;
-    }
-
-    public void setFechaHora(LocalDateTime fechaHora) {
-        this.fechaHora = fechaHora;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-
-    public Odontologo getOdontologo() {
-        return odontologo;
-    }
-
-    public void setOdontologo(Odontologo odontologo) {
-        this.odontologo = odontologo;
-    }
 }

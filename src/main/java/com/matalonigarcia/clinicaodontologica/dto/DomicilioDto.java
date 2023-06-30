@@ -2,24 +2,33 @@ package com.matalonigarcia.clinicaodontologica.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.matalonigarcia.clinicaodontologica.entity.Domicilio;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NoArgsConstructor(force = true)
+@AllArgsConstructor
+@Getter
+@Setter
 public class DomicilioDto {
+    @Schema(title = "ID", description = "Valor autogenerado por la base de datos.", example = "16")
     private Long id;
+
+    @Schema(title = "Calle", description = "El nombre de la calle del domicilio.", example = "Pudding Lane")
     private String calle;
-    private int numero;
+
+    @Schema(title = "Número", description = "El número del domicilio.", example = "10")
+    private Integer numero;
+
+    @Schema(title = "Localidad", description = "El nombre de la localidad del domicilio.", example = "Birmingham")
     private String localidad;
+
+    @Schema(title = "Provincia", description = "El nombre de la provincia del domicilio.",
+            example = "Tierras Medias Occidentales")
     private String provincia;
-
-    public DomicilioDto() {}
-
-    public DomicilioDto(Long id, String calle, int numero, String localidad, String provincia) {
-        this.id = id;
-        this.calle = calle;
-        this.numero = numero;
-        this.localidad = localidad;
-        this.provincia = provincia;
-    }
 
     public static DomicilioDto fromDomicilio(Domicilio domicilio) {
         return new DomicilioDto(
@@ -29,46 +38,6 @@ public class DomicilioDto {
                 domicilio.getLocalidad(),
                 domicilio.getProvincia()
         );
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCalle() {
-        return calle;
-    }
-
-    public void setCalle(String calle) {
-        this.calle = calle;
-    }
-
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
-    public String getLocalidad() {
-        return localidad;
-    }
-
-    public void setLocalidad(String localidad) {
-        this.localidad = localidad;
-    }
-
-    public String getProvincia() {
-        return provincia;
-    }
-
-    public void setProvincia(String provincia) {
-        this.provincia = provincia;
     }
 
     @Override

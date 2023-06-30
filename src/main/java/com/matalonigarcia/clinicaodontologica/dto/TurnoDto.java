@@ -1,55 +1,41 @@
 package com.matalonigarcia.clinicaodontologica.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.matalonigarcia.clinicaodontologica.entity.Turno;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NoArgsConstructor(force = true)
+@AllArgsConstructor
+@Getter
+@Setter
 public class TurnoDto {
+    @Schema(title = "ID", description = "Valor autogenerado por la base de datos.", example = "154")
     private Long id;
+
+    @Schema(title = "Fecha y Hora", description = "La fecha y hora en que programaste tu turno.",
+            example = "2023-06-29T13:25")
     private LocalDateTime fechaHora;
+
+    @Schema(title = "Paciente DTO", description = "La información de tu paciente en DTO.")
     private PacienteDto pacienteDto;
+
+    @Schema(title = "Odontólogo DTO", description = "La información de tu odontólogo en DTO.")
     private OdontologoDto odontologoDto;
 
-    public TurnoDto() {}
-
-    public TurnoDto(Long id, LocalDateTime fecha, PacienteDto pacienteDto, OdontologoDto odontologoDto) {
-        this.id = id;
-        this.fechaHora = fecha;
-        this.pacienteDto = pacienteDto;
-        this.odontologoDto = odontologoDto;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getFechaHora() {
-        return fechaHora;
-    }
-
-    public void setFechaHora(LocalDateTime fechaHora) {
-        this.fechaHora = fechaHora;
-    }
-
-    public PacienteDto getPacienteDto() {
-        return pacienteDto;
-    }
-
-    public void setPacienteDto(PacienteDto pacienteDto) {
-        this.pacienteDto = pacienteDto;
-    }
-
-    public OdontologoDto getOdontologoDto() {
-        return odontologoDto;
-    }
-
-    public void setOdontologoDto(OdontologoDto odontologoDto) {
-        this.odontologoDto = odontologoDto;
+    public static TurnoDto fromTurno(Turno turno) {
+        return new TurnoDto(
+                turno.getId(),
+                turno.getFechaHora(),
+                PacienteDto.fromPaciente(turno.getPaciente()),
+                OdontologoDto.fromOdontologo(turno.getOdontologo())
+        );
     }
 
     @Override
