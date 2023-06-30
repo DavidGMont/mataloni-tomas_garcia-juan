@@ -1,0 +1,1 @@
+import{_ as e,o,c as t,a as s}from"./index-6328ba9f.js";const _={},c={class:"about"},n=s("h1",null,"Lu, nos quedamos sin tiempo 🥺",-1),a=[n];function i(r,u){return o(),t("div",c,a)}const l=e(_,[["render",i]]);export{l as default};
